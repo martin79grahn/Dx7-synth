@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>DX7 FM-synt</title>
+  <meta name="description" content="Yamaha DX7-inspirerad FM-synt för mobilen">
+  <meta name="theme-color" content="#1c1816">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DX7">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="panel-top">
+      <div class="brand">
+        <span class="brand-dx">DX7</span>
+        <span class="brand-sub">FM&nbsp;SYNT</span>
+      </div>
+      <div class="lcd" id="lcd" aria-live="polite">
+        <div class="lcd-line" id="lcd1">INT 01 E.PIANO</div>
+        <div class="lcd-line" id="lcd2">ALG 05  FB 6</div>
+      </div>
+      <div class="voice-nav">
+        <button class="mbtn" id="prevVoice" aria-label="Föregående ljud">◀</button>
+        <button class="mbtn" id="nextVoice" aria-label="Nästa ljud">▶</button>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="voices" role="tab">Ljud</button>
+      <button class="tab" data-tab="edit" role="tab">Redigera</button>
+      <button class="tab" data-tab="settings" role="tab">Inställningar</button>
+    </nav>
+
+    <main class="content">
+      <section class="page active" id="page-voices">
+        <div class="bank-bar">
+          <select id="bankSelect" aria-label="Välj bank"></select>
+          <label class="mbtn file-btn">Ladda .syx<input type="file" id="syxFile" accept=".syx,.SYX,application/octet-stream" hidden></label>
+        </div>
+        <div class="voice-grid" id="voiceGrid"></div>
+        <p class="hint" id="bankHint"></p>
+      </section>
+
+      <section class="page" id="page-edit">
+        <div class="edit-head">
+          <input type="text" id="voiceName" maxlength="10" spellcheck="false" aria-label="Ljudets namn">
+          <button class="mbtn accent" id="saveVoice">Spara</button>
+          <button class="mbtn" id="revertVoice">Ångra</button>
+        </div>
+
+        <div class="card">
+          <div class="alg-row">
+            <svg id="algDiagram" viewBox="0 0 240 200" role="img" aria-label="Algoritm"></svg>
+            <div class="alg-controls" id="globalTop"></div>
+          </div>
+        </div>
+
+        <div class="op-tabs" id="opTabs"></div>
+        <div class="card" id="opEditor"></div>
+
+        <details class="card">
+          <summary>Tonhöjdsenvelope (pitch EG)</summary>
+          <div id="pegEditor"></div>
+        </details>
+        <details class="card">
+          <summary>LFO</summary>
+          <div id="lfoEditor"></div>
+        </details>
+      </section>
+
+      <section class="page" id="page-settings">
+        <div class="card" id="settingsCard"></div>
+        <div class="card">
+          <h3>Mina ljud</h3>
+          <p class="hint">Sparade ljud ligger i bara den här webbläsaren. Exportera dem som en DX7-bank (.syx) för att spara en kopia eller ladda dem i Dexed eller en riktig DX7.</p>
+          <div class="btn-row">
+            <button class="mbtn" id="exportBank">Exportera aktuell bank (.syx)</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Om appen</h3>
+          <p class="hint">Sex operatorer, alla 32 algoritmer, DX7:s envelopes, nivå- och hastighetsskalning, tonhöjdsenvelope och LFO. Läser riktiga DX7-banker (32 ljud) och enstaka ljud i .syx-format. Spela med fingrarna, datorns tangentbord (A–K) eller ett MIDI-keyboard.</p>
+          <p class="hint" id="midiStatus"></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="perform">
+      <div class="perform-bar">
+        <button class="mbtn" id="octDown" aria-label="Oktav ner">OKT −</button>
+        <span class="oct-label" id="octLabel">C3</span>
+        <button class="mbtn" id="octUp" aria-label="Oktav upp">OKT +</button>
+        <button class="mbtn toggle" id="sustainBtn" aria-pressed="false">SUSTAIN</button>
+        <div class="strip" id="bendStrip" aria-label="Pitch bend"><span class="strip-label">BEND</span><span class="strip-thumb"></span></div>
+        <div class="strip" id="modStrip" aria-label="Modulationshjul"><span class="strip-label">MOD</span><span class="strip-thumb"></span></div>
+      </div>
+      <div class="keyboard" id="keyboard"></div>
+    </footer>
+
+    <div class="start-overlay" id="startOverlay">
+      <button class="start-btn" id="startBtn">
+        <span class="brand-dx">DX7</span>
+        <span>Tryck för att starta ljudet</span>
+      </button>
+    </div>
+  </div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
